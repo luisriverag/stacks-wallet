@@ -35,6 +35,7 @@ export const ReceiveStxModal: FC<ReceiveStxModalProps> = ({ address }) => {
   const [view, setView] = useState<'main' | 'verify-ledger'>('main');
   const [ledgerAddress, setLedgerAddress] = useState<null | string>(null);
   const [isWaitingLedger, setIsWaitingLedger] = useState(false);
+  const [softwareWalletAddress, setSoftwareWalletAddress] = useState<string | null>(null);
   const { hasCopied, onCopy } = useClipboard(address);
   const closeModal = () => dispatch(homeActions.closeReceiveModal());
 
@@ -130,19 +131,38 @@ export const ReceiveStxModal: FC<ReceiveStxModalProps> = ({ address }) => {
             )}
           </Flex>
         )}
-        <Flex
-          mt="base-tight"
-          justifyContent="center"
-          alignItems="center"
-          border="1px solid #E1E3E8"
-          height="48px"
-          borderRadius="6px"
-          width="100%"
-        >
-          <Text color="ink" fontSize="14px">
-            {address}
-          </Text>
-        </Flex>
+        {walletType === 'ledger' && (
+          <Flex
+            mt="base-tight"
+            justifyContent="center"
+            alignItems="center"
+            border="1px solid #E1E3E8"
+            height="48px"
+            borderRadius="6px"
+            width="100%"
+          >
+            <Text color="ink" fontSize="14px">
+              {address}
+            </Text>
+          </Flex>
+        )}
+        {walletType === 'software' && (
+          <Flex
+            mt="base-tight"
+            justifyContent="center"
+            alignItems="center"
+            border="1px solid #E1E3E8"
+            height="48px"
+            borderRadius="6px"
+            width="100%"
+          >
+            <Text color="ink" fontSize="14px">
+              {softwareWalletAddress === null
+                ? 'Enter your password to see your address'
+                : softwareWalletAddress}
+            </Text>
+          </Flex>
+        )}
         <Box mb="loose" mt="base">
           <Button variant="link" onClick={onCopy} mr="tight">
             {hasCopied ? 'Copied' : 'Copy address'}
